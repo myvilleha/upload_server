@@ -13,18 +13,52 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     return '''
+        <!DOCTYPE html>
         <html>
-        <head><title>Upload Screenshot</title></head>
+        <head>
+            <title>Upload Payment Screenshot</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f7f7f7;
+                    padding: 2em;
+                }
+                .upload-box {
+                    background: white;
+                    padding: 2em;
+                    border-radius: 10px;
+                    max-width: 500px;
+                    margin: auto;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }
+                input[type="file"] {
+                    margin-bottom: 1em;
+                }
+                input[type="submit"] {
+                    background-color: #4CAF50;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                input[type="submit"]:hover {
+                    background-color: #45a049;
+                }
+            </style>
+        </head>
         <body>
-            <h2>Upload Payment Screenshot (2A)</h2>
-            <form action="/upload_2a" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" required>
-                <br><br>
-                <input type="submit" value="Upload Screenshot">
-            </form>
+            <div class="upload-box">
+                <h2>Upload Payment Screenshot</h2>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" required><br>
+                    <input type="submit" value="Upload Screenshot">
+                </form>
+            </div>
         </body>
         </html>
     '''
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -33,9 +67,10 @@ def upload_file():
     if file.filename == '':
         return "No selected file", 400
     if file and allowed_file(file.filename):
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(save_path)
-        return f"File uploaded successfully as {file.filename}"
+        return f"<h3>File uploaded successfully as {file.filename}</h3><br><a href='/'>Upload another file</a>"
     return "Invalid file type", 400
 
 if __name__ == '__main__':
