@@ -4,7 +4,7 @@
     "slug": "upload_server",
     "description": "A local upload server for payment screenshot handling.",
     "version": "1.0",
-    "url": "https://github.com/your-username/home-assistant-upload-addon",
+    "url": "https://github.com/myvilleha/upload_server",
     "arch": [
       "amd64",
       "aarch64",
