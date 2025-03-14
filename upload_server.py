@@ -12,8 +12,19 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return "<h3>Upload server is running. Use the upload form to send files.</h3>"
-
+    return '''
+        <html>
+        <head><title>Upload Screenshot</title></head>
+        <body>
+            <h2>Upload Payment Screenshot (2A)</h2>
+            <form action="/upload_2a" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <br><br>
+                <input type="submit" value="Upload Screenshot">
+            </form>
+        </body>
+        </html>
+    '''
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
