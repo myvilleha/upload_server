@@ -72,7 +72,11 @@ def upload_file():
         file.save(save_path)
         return f"""<h3>File uploaded successfully as {file.filename}</h3><br>
         <a href='/'>Upload another file</a><br><br>
-        <a href='http://192.168.2.191:8123' style='color:blue; text-decoration:underline;'>⬅ Back to Dashboard</a>"""
+        <a href='http://192.168.2.191:8123'>
+        <button style='padding:10px 16px; background-color:#2196F3; color:white; border:none; border-radius:6px; cursor:pointer;'>
+        ⬅ Return to Home Assistant Dashboard
+        </button>
+        </a>"""
     else:
         return "Invalid file type", 400
 
