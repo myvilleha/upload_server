@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def index():
@@ -22,6 +22,7 @@ def index():
                     font-family: Arial, sans-serif;
                     background-color: #f0f0f0;
                     padding: 4em;
+                    font-size: 0.5em;
                 }}
                 .upload-box {{
                     background: white;
@@ -33,20 +34,20 @@ def index():
                     text-align: center;
                 }}
                 h2 {{
-                    font-size: 3em;
+                    font-size: 2em;
                     margin-bottom: 1.5em;
                     color: #333;
                 }}
                 input[type='file'] {{
-                    font-size: 1.8em;
-                    padding: 1.5em;
+                    font-size: 1.2em;
+                    padding: 1em;
                     margin-top: 1.5em;
                 }}
                 input[type='submit'] {{
                     background-color: #4CAF50;
                     color: white;
-                    padding: 22px 44px;
-                    font-size: 2em;
+                    padding: 14px 28px;
+                    font-size: 1.5em;
                     border: none;
                     border-radius: 12px;
                     margin-top: 3em;
@@ -84,13 +85,13 @@ def upload_file():
             <!DOCTYPE html>
             <html>
             <head>
-                <meta http-equiv='refresh' content='3; url=http://192.168.2.191:8123'>
                 <style>
                     body {{
                         font-family: Arial, sans-serif;
                         text-align: center;
                         padding: 4em;
                         background-color: #f9f9f9;
+                        font-size: 0.5em;
                     }}
                     .success-box {{
                         background-color: #fff;
@@ -101,24 +102,19 @@ def upload_file():
                         box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
                     }}
                     h3 {{
-                        font-size: 2.5em;
+                        font-size: 2em;
                         color: green;
                     }}
-                    p, a {{
-                        font-size: 2em;
+                    p {{
+                        font-size: 1.5em;
                         margin-top: 1.5em;
-                    }}
-                    a {{
-                        color: #2196F3;
-                        text-decoration: underline;
                     }}
                 </style>
             </head>
             <body>
                 <div class='success-box'>
                     <h3>✅ File uploaded successfully as {file.filename}</h3>
-                    <p>Returning to MyVille Dashboard in 3 seconds...</p>
-                    <a href='http://192.168.2.191:8123'>⬅ Tap here if not redirected</a>
+                    <p>You may now close this window.</p>
                 </div>
             </body>
             </html>
