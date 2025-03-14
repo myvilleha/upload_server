@@ -102,7 +102,7 @@ def upload_file():
                         box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
                     }}
                     h3 {{
-                        font-size: 2em;
+                        font-size: 1em;
                         color: green;
                     }}
                     p {{
