@@ -1,9 +1,14 @@
 from flask import Flask, request
 import os
 from datetime import datetime
+import requests
 
 UPLOAD_FOLDER = "/config/www/payment"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "pdf"}
+
+# Home Assistant API Config
+HA_URL = "http://192.168.2.191:8123/api/states/input_text.active_user"
+HA_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMmExMzgzMDFkOWU0NzExYWNkMTEyYWY0NTNmZDMxMCIsImlhdCI6MTc0MTk0Mzk2MSwiZXhwIjoyMDU3MzAzOTYxfQ.5hgLZ0E29HA3fxOIBk8k79OBDDCW4RtpueLtNy84IHc"  # <-- Replace this with your real token
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -11,22 +16,34 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def get_active_username():
+    try:
+        headers = {
+            "Authorization": f"Bearer {HA_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        response = requests.get(HA_URL, headers=headers)
+        if response.status_code == 200:
+            return response.json().get('state', 'anonymous')
+    except:
+        pass
+    return "anonymous"
+
 @app.route('/')
 def index():
-    username = request.args.get('username', 'anonymous')
-    return f"""
+    return """
         <!DOCTYPE html>
         <html>
         <head>
             <title>Upload Payment Screenshot</title>
             <style>
-                body {{
+                body {
                     font-family: Arial, sans-serif;
                     background-color: #f0f0f0;
                     padding: 4em;
                     font-size: 0.5em;
-                }}
-                .upload-box {{
+                }
+                .upload-box {
                     background: white;
                     padding: 4em;
                     border-radius: 24px;
@@ -34,18 +51,18 @@ def index():
                     margin: auto;
                     box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
                     text-align: center;
-                }}
-                h2 {{
+                }
+                h2 {
                     font-size: 2em;
                     margin-bottom: 1.5em;
                     color: #333;
-                }}
-                input[type='file'] {{
+                }
+                input[type='file'] {
                     font-size: 1.2em;
                     padding: 1em;
                     margin-top: 1.5em;
-                }}
-                input[type='submit'] {{
+                }
+                input[type='submit'] {
                     background-color: #4CAF50;
                     color: white;
                     padding: 14px 28px;
@@ -54,17 +71,16 @@ def index():
                     border-radius: 12px;
                     margin-top: 3em;
                     cursor: pointer;
-                }}
-                input[type='submit']:hover {{
+                }
+                input[type='submit']:hover {
                     background-color: #45a049;
-                }}
+                }
             </style>
         </head>
         <body>
             <div class='upload-box'>
                 <h2>📤 Upload Payment Screenshot</h2>
                 <form action='/upload' method='post' enctype='multipart/form-data'>
-                    <input type='hidden' name='username' value='{username}'>
                     <input type='file' name='file' required><br><br>
                     <input type='submit' value='Upload Screenshot'>
                 </form>
@@ -82,12 +98,14 @@ def upload_file():
         return "No selected file", 400
     if file and allowed_file(file.filename):
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        username = request.form.get('username', 'anonymous')
+
+        username = get_active_username()
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         extension = file.filename.rsplit('.', 1)[1].lower()
         new_filename = f"{username}_{timestamp}.{extension}"
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
         file.save(save_path)
+
         return f"""
             <!DOCTYPE html>
             <html>
@@ -121,7 +139,7 @@ def upload_file():
             <body>
                 <div class='success-box'>
                     <h3>✅ File uploaded successfully as {new_filename}</h3>
-                    <p>You may now close this window and wait for the top-up to be credited.</p>
+                    <p>You may now close this window.</p>
                 </div>
             </body>
             </html>
