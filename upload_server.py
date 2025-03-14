@@ -1,5 +1,6 @@
 from flask import Flask, request
 import os
+from datetime import datetime
 
 UPLOAD_FOLDER = "/config/www/payment"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "pdf"}
@@ -8,11 +9,12 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
-    return '.' in filename and '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def index():
-    return """
+    username = request.args.get('username', 'anonymous')
+    return f"""
         <!DOCTYPE html>
         <html>
         <head>
@@ -62,6 +64,7 @@ def index():
             <div class='upload-box'>
                 <h2>📤 Upload Payment Screenshot</h2>
                 <form action='/upload' method='post' enctype='multipart/form-data'>
+                    <input type='hidden' name='username' value='{username}'>
                     <input type='file' name='file' required><br><br>
                     <input type='submit' value='Upload Screenshot'>
                 </form>
@@ -79,7 +82,11 @@ def upload_file():
         return "No selected file", 400
     if file and allowed_file(file.filename):
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        username = request.form.get('username', 'anonymous')
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        extension = file.filename.rsplit('.', 1)[1].lower()
+        new_filename = f"{username}_{timestamp}.{extension}"
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
         file.save(save_path)
         return f"""
             <!DOCTYPE html>
@@ -102,7 +109,7 @@ def upload_file():
                         box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
                     }}
                     h3 {{
-                        font-size: 1.5em;
+                        font-size: 2em;
                         color: green;
                     }}
                     p {{
@@ -113,7 +120,7 @@ def upload_file():
             </head>
             <body>
                 <div class='success-box'>
-                    <h3>✅ File uploaded successfully as {file.filename}</h3>
+                    <h3>✅ File uploaded successfully as {new_filename}</h3>
                     <p>You may now close this window and wait for the top-up to be credited.</p>
                 </div>
             </body>
