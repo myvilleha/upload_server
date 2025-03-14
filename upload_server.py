@@ -70,16 +70,10 @@ def upload_file():
         os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(save_path)
-        return f"""<h3>File uploaded successfully as {file.filename}</h3><br>
-        <a href='/'>Upload another file</a><br><br>
-        <a href='http://192.168.2.191:8123'><br><br>
-        <button onclick="window.close()" style="padding:15px 30px; background-color:#f44336; color:white; font-size:1.2em; border:none; border-radius:10px; cursor:pointer;">
-        ✖ Close Window
-        </button><br><br>
-        <button style='padding:10px 16px; background-color:#2196F3; color:white; border:none; border-radius:6px; cursor:pointer;'>
-        ⬅ Return to Home Assistant Dashboard
-        </button>
-        </a>"""
+        return f"""<h3>✅ File uploaded successfully as {file.filename}</h3><br>
+        <p>Returning to Home Assistant...</p>
+        <meta http-equiv="refresh" content="3; url=http://192.168.2.191:8123">
+        <a href='http://192.168.2.191:8123' style='font-size:1.2em; color:blue; text-decoration:underline;'>⬅ Tap here if not redirected</a>"""
     else:
         return "Invalid file type", 400
 
