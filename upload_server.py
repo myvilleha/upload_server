@@ -114,7 +114,7 @@ def upload_file():
             <body>
                 <div class='success-box'>
                     <h3>✅ File uploaded successfully as {file.filename}</h3>
-                    <p>You may now close this window and wait for the top-up credit.</p>
+                    <p>You may now close this window and wait for the top-up to be credited.</p>
                 </div>
             </body>
             </html>
