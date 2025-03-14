@@ -18,42 +18,61 @@ def index():
         <head>
             <title>Upload Payment Screenshot</title>
             <style>
-                body {
+                body {{
                     font-family: Arial, sans-serif;
-                    background-color: #f7f7f7;
-                    padding: 2em;
-                }
-                .upload-box {
+                    background-color: #f0f0f0;
+                    padding: 3em;
+                }}
+                .upload-box {{
                     background: white;
-                    padding: 2em;
-                    border-radius: 10px;
-                    max-width: 500px;
+                    padding: 3em;
+                    border-radius: 16px;
+                    max-width: 700px;
                     margin: auto;
-                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                }
-                input[type="file"] {
+                    box-shadow: 0 0 16px rgba(0, 0, 0, 0.15);
+                    text-align: center;
+                }}
+                h2 {{
+                    font-size: 2em;
                     margin-bottom: 1em;
-                }
-                input[type="submit"] {
+                    color: #333;
+                }}
+                input[type="file"] {{
+                    font-size: 1.2em;
+                    padding: 1em;
+                    margin-top: 1em;
+                }}
+                input[type="submit"] {{
                     background-color: #4CAF50;
                     color: white;
-                    padding: 10px 20px;
+                    padding: 15px 30px;
+                    font-size: 1.2em;
                     border: none;
-                    border-radius: 5px;
+                    border-radius: 10px;
+                    margin-top: 2em;
                     cursor: pointer;
-                }
-                input[type="submit"]:hover {
+                }}
+                input[type="submit"]:hover {{
                     background-color: #45a049;
-                }
+                }}
+                .back-link {{
+                    font-size: 1.2em;
+                    margin-top: 2em;
+                    display: block;
+                    color: #2196F3;
+                    text-decoration: underline;
+                }}
             </style>
         </head>
         <body>
             <div class="upload-box">
-                <h2>Upload Payment Screenshot</h2>
-                <form action="/upload" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" required><br>
+                <h2>Upload Payment Screenshot (2A)</h2>
+                <form action="/upload_2a" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" required><br><br>
                     <input type="submit" value="Upload Screenshot">
                 </form>
+                <br><br>
+                <a href="http://192.168.2.191:8123" class="back-link">⬅ Back to Home Assistant Dashboard</a>
             </div>
         </body>
         </html>
