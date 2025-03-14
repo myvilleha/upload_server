@@ -1,0 +1,15 @@
+name: Upload Server
+version: "1.0"
+slug: upload_server
+description: A local upload server to receive payment screenshots and save to /config/www/payment/2A
+arch:
+  - amd64
+  - aarch64
+  - armv7
+startup: application
+boot: auto
+host_network: true
+options: {}
+schema: {}
+map:
+  - config:rw
