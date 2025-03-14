@@ -72,7 +72,10 @@ def upload_file():
         file.save(save_path)
         return f"""<h3>File uploaded successfully as {file.filename}</h3><br>
         <a href='/'>Upload another file</a><br><br>
-        <a href='http://192.168.2.191:8123'>
+        <a href='http://192.168.2.191:8123'><br><br>
+        <button onclick="window.close()" style="padding:15px 30px; background-color:#f44336; color:white; font-size:1.2em; border:none; border-radius:10px; cursor:pointer;">
+        ✖ Close Window
+        </button><br><br>
         <button style='padding:10px 16px; background-color:#2196F3; color:white; border:none; border-radius:6px; cursor:pointer;'>
         ⬅ Return to Home Assistant Dashboard
         </button>
